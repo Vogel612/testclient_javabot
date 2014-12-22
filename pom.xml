@@ -39,6 +39,14 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<configuration>
+					<mainClass>de.vogel612.testclient_javabot.Main</mainClass>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
