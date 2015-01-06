@@ -1,17 +1,15 @@
-package de.vogel612.testclient_javabot.client;
+package de.vogel612.testclient_javabot.core;
 
 import com.gmail.inverseconduit.SESite;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
 public class BotMessageUtils {
 
-	private static final String USERNAME = "Junior";
-
-	public static ChatMessage createFromString(String message) {
+	public static ChatMessage createFromString(String message, String username) {
 		Timestamp stamp = new Timestamp();
 
 		return new ChatMessage(SESite.STACK_OVERFLOW, 1, "offline-testing",
-				USERNAME, 1, message, stamp.asLong());
+				username, 1, message, stamp.asLong());
 	}
 
 }

@@ -1,4 +1,4 @@
-package de.vogel612.testclient_javabot.client;
+package de.vogel612.testclient_javabot.core;
 
 import java.util.concurrent.atomic.AtomicLong;
 

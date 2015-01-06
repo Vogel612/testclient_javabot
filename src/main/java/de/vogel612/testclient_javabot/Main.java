@@ -14,42 +14,48 @@ import com.gmail.inverseconduit.security.ScriptSecurityPolicy;
 
 public final class Main {
 
-	public static final void main(String[] args) {
-		setupLogging();
+    public static final void main(String[] args) {
+        setupLogging();
 
-		Policy.setPolicy(ScriptSecurityPolicy.getInstance());
-		System.setSecurityManager(ScriptSecurityManager.getInstance());
+        Policy.setPolicy(ScriptSecurityPolicy.getInstance());
+        System.setSecurityManager(ScriptSecurityManager.getInstance());
 
-		BotConfig config = loadConfig();
-		AppContext.INSTANCE.add(config);
+        BotConfig config = loadConfig();
+        AppContext.INSTANCE.add(config);
 
-		new TestProgram().startup();
-	}
+        TestProgram p = new TestProgram();
+        AppContext.INSTANCE.add(p);
 
-	private static BotConfig loadConfig() {
-		Properties properties = new Properties();
-		properties.setProperty("LOGIN-EMAIL", "");
-		properties.setProperty("TRIGGER", "**");
-		properties.setProperty("PASSWORD", "");
-		properties.setProperty("ROOMS", "1");
-		return new BotConfig(properties);
-	}
+        p.startup();
+    }
 
-	private static void setupLogging() {
-		Filter filter = new Filter() {
-			private final String packageName = Main.class.getPackage()
-					.getName();
+    private static BotConfig loadConfig() {
+        Properties properties = new Properties();
+        properties.setProperty("LOGIN-EMAIL", "");
+        properties.setProperty("TRIGGER", "**");
+        properties.setProperty("PASSWORD", "");
+        properties.setProperty("ROOMS", "1");
+        return new BotConfig(properties);
+    }
 
-			public boolean isLoggable(LogRecord record) {
-				// only log messages from this app
-				String name = record.getLoggerName();
-				return (name == null) ? false : name.startsWith(packageName);
-			}
-		};
+    private static void setupLogging() {
+        Filter filter = new Filter() {
 
-		Logger global = Logger.getLogger("");
-		for (Handler handler : global.getHandlers()) {
-			handler.setFilter(filter);
-		}
-	}
+            private final String packageName = Main.class.getPackage().getName();
+
+            @Override
+            public boolean isLoggable(LogRecord record) {
+                // only log messages from this app
+                String name = record.getLoggerName();
+                return (name == null)
+                    ? false
+                    : name.startsWith(packageName);
+            }
+        };
+
+        Logger global = Logger.getLogger("");
+        for (Handler handler : global.getHandlers()) {
+            handler.setFilter(filter);
+        }
+    }
 }
