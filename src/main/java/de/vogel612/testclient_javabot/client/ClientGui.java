@@ -1,7 +1,9 @@
 package de.vogel612.testclient_javabot.client;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -10,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 import com.gmail.inverseconduit.chat.ChatWorker;
 import com.gmail.inverseconduit.datatype.ChatMessage;
@@ -18,6 +20,8 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
 import de.vogel612.testclient_javabot.core.TestingChatClient;
 
 public class ClientGui extends JFrame implements ChatWorker {
+
+    private static final Insets     STANDARD_PADDING  = new Insets(10, 10, 10, 10);
 
     private final TestingChatClient chatClient = TestingChatClient.getInstance();
 
@@ -27,7 +31,7 @@ public class ClientGui extends JFrame implements ChatWorker {
 
     private final JScrollPane       messageView;
 
-    private final JTextField        userInput  = new JTextField(250);
+    private final JTextArea         userInput  = new JTextArea(3, 250);
 
     private final JButton           submit     = new JButton("send");
 
@@ -44,7 +48,8 @@ public class ClientGui extends JFrame implements ChatWorker {
         c.gridy = 0;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 1.0;
-        c.weighty = 0.1;
+        c.weighty = 0.0;
+        c.insets = STANDARD_PADDING;
         this.add(new JLabel("Testing site for JavaBot aka. Junior"), c);
 
         c = new GridBagConstraints();
@@ -59,10 +64,14 @@ public class ClientGui extends JFrame implements ChatWorker {
         c.gridy = 2;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weighty = 0.1;
+        c.weighty = 0.0;
         c.weightx = 0.8;
-        this.add(userInput, c);
+        c.insets = STANDARD_PADDING;
+        JScrollPane inputContainer = new JScrollPane(userInput, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        inputContainer.setMinimumSize(new Dimension(230, 50));
+        this.add(inputContainer, c);
         c.weightx = 0.2;
+        submit.setMinimumSize(new Dimension(100, 40));
         this.add(submit, c);
 
         this.setSize(350, 500);
@@ -83,6 +92,7 @@ public class ClientGui extends JFrame implements ChatWorker {
         messageTable.getColumnModel().getColumn(0).setResizable(false);
         messageTable.getColumnModel().getColumn(1).setResizable(false);
 
+        //FIXME: doesn't work... probably the ChatTableModel borks it...
         messageTable.getColumnModel().getColumn(0).setWidth(80);
         messageTable.getColumnModel().getColumn(1).setWidth(260);
         messageTable.setVisible(true);
@@ -114,6 +124,11 @@ public class ClientGui extends JFrame implements ChatWorker {
         @Override
         public void keyPressed(KeyEvent ev) {
             if (ev.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (ev.isShiftDown()) {
+                    // make a newline for it
+                    userInput.append("\r\n");
+                    return;
+                }
                 ev.consume();
                 submit.doClick();
             }

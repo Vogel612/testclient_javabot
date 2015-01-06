@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
-public class TestingChatClient {
+public final class TestingChatClient {
 
     private static final int               LIMIT         = 200;
 
