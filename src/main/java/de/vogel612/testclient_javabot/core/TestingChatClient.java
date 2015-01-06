@@ -23,17 +23,20 @@ public final class TestingChatClient {
 
     private TestingChatClient() {}
 
-    private long getLimit() {
-        return (LIMIT - lastQueryTime.get() + currentItem.get()) % LIMIT;
+    private long getLimit(final int from) {
+        return (LIMIT - from + currentItem.get()) % LIMIT;
     }
 
     public List<ChatMessage> newMessages() {
+        return newMessages(lastQueryTime.get());
+    }
+
+    public List<ChatMessage> newMessages(final int since) {
         final List<ChatMessage> newMessages;
-        final int start = lastQueryTime.get();
-        final long limit = getLimit();
+        final long limit = getLimit(since);
         synchronized (messages) {
             newMessages =
-                    IntStream.generate(new Counter(start)).limit(limit).mapToObj(i -> messages[i]).filter(e -> e != null && !e.getMessage().isEmpty()).collect(Collectors.toList());
+                    IntStream.generate(new Counter(since)).limit(limit).mapToObj(i -> messages[i]).filter(e -> e != null && !e.getMessage().isEmpty()).collect(Collectors.toList());
         }
         lastQueryTime.lazySet(currentItem.get());
         return newMessages;
@@ -57,7 +60,7 @@ public final class TestingChatClient {
 
     private final class Counter implements IntSupplier {
 
-        int current;
+        private int current;
 
         Counter(int start) {
             current = start;
@@ -76,6 +79,16 @@ public final class TestingChatClient {
             }
             return item;
         }
+    }
+
+    /**
+     * Allows resetting the TestingChatClient. All currently stored messages
+     * will be lost.
+     */
+    public void reset() {
+        currentItem.lazySet(0);
+        lastQueryTime.lazySet(0);
+        // no need to reset messages ;)
     }
 
     private final void incrementAndWrap() {
