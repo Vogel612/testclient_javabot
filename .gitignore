@@ -1,6 +1,11 @@
 ##ignore eclipse-specifics
 .classpath
 .project
-.settings
+/.settings
+
+##ignore IntelliJ-specifics
+/.idea
+
 ##ignore maven-specifics
 /target
+*.iml

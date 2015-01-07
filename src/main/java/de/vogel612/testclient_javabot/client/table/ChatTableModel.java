@@ -1,4 +1,4 @@
-package de.vogel612.testclient_javabot.client;
+package de.vogel612.testclient_javabot.client.table;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,23 +17,24 @@ import javax.swing.JTextArea;
 import com.gmail.inverseconduit.chat.ChatWorker;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
+import de.vogel612.testclient_javabot.client.table.ChatTableModel;
 import de.vogel612.testclient_javabot.core.TestingChatClient;
 
 public class ClientGui extends JFrame implements ChatWorker {
 
-    private static final Insets     STANDARD_PADDING  = new Insets(10, 10, 10, 10);
+    private static final Insets     STANDARD_PADDING = new Insets(10, 10, 10, 10);
 
-    private final TestingChatClient chatClient = TestingChatClient.getInstance();
+    private final TestingChatClient chatClient       = TestingChatClient.getInstance();
 
-    private final ChatTableModel    tableModel = new ChatTableModel();
+    private final ChatTableModel    tableModel       = new ChatTableModel();
 
     private final JTable            messageTable;
 
     private final JScrollPane       messageView;
 
-    private final JTextArea         userInput  = new JTextArea(3, 250);
+    private final JTextArea         userInput        = new JTextArea(3, 250);
 
-    private final JButton           submit     = new JButton("send");
+    private final JButton           submit           = new JButton("send");
 
     public ClientGui() {
         messageTable = new JTable(tableModel);
@@ -87,14 +88,15 @@ public class ClientGui extends JFrame implements ChatWorker {
     }
 
     private void setupMessageTable() {
+        messageTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         messageTable.setAutoCreateColumnsFromModel(true);
         messageTable.setFillsViewportHeight(true);
         messageTable.getColumnModel().getColumn(0).setResizable(false);
-        messageTable.getColumnModel().getColumn(1).setResizable(false);
 
         //FIXME: doesn't work... probably the ChatTableModel borks it...
-        messageTable.getColumnModel().getColumn(0).setWidth(80);
-        messageTable.getColumnModel().getColumn(1).setWidth(260);
+        messageTable.getColumnModel().getColumn(0).setMinWidth(60);
+        messageTable.getColumnModel().getColumn(0).setMaxWidth(90);
+        messageTable.getColumnModel().getColumn(0).setPreferredWidth(90);
         messageTable.setVisible(true);
     }
 
