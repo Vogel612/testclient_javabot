@@ -54,7 +54,7 @@ public class TestProgram {
                 Logger.getAnonymousLogger().severe("Exception in querying thread: " + e.getMessage());
                 e.printStackTrace();
             }
-        }, 5, 3, TimeUnit.SECONDS);
+        }, 3, 1, TimeUnit.SECONDS);
         Logger.getAnonymousLogger().info("querying thread started");
     }
 

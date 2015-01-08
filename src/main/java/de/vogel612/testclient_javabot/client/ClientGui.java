@@ -40,33 +40,21 @@ public class ClientGui extends JFrame implements ChatWorker {
 
     public ClientGui() {
         messageTable = new JTable(tableModel);
-        setupMessageTable();
         messageView = new JScrollPane(messageTable);
-        messageView.setAutoscrolls(true);
-        //Following line is adapted from http://stackoverflow.com/a/15784385/1803692
-        messageView.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> e.getAdjustable().setValue(e.getAdjustable().getMaximum()));
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
+        this.setMinimumSize(new Dimension(350, 500));
 
+        setupHeading();
+        setupMessageView();
+        setupUserInputArea();
+
+        this.doLayout();
+    }
+
+    private void setupUserInputArea() {
         GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = 2;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        c.insets = STANDARD_PADDING;
-        this.add(new JLabel("Testing site for JavaBot aka. Junior"), c);
-
-        c = new GridBagConstraints();
-        c.gridy = 1;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        this.add(messageView, c);
-
-        c = new GridBagConstraints();
         c.gridy = 2;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -79,17 +67,36 @@ public class ClientGui extends JFrame implements ChatWorker {
         c.weightx = 0.2;
         submit.setMinimumSize(new Dimension(100, 40));
         this.add(submit, c);
+        bindListeners();
+    }
 
-        this.setSize(350, 500);
-        this.userInput.setSize(170, 50);
-        this.messageView.setSize(340, 400);
-        this.submit.setSize(70, 50);
-
+    private void setupMessageView() {
+        setupMessageTable();
+        messageView.setAutoscrolls(true);
+        //Following line is adapted from http://stackoverflow.com/a/15784385/1803692
+        messageView.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> e.getAdjustable().setValue(e.getAdjustable().getMaximum()));
         messageView.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         messageView.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        this.doLayout();
 
-        initialize();
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = STANDARD_PADDING;
+        this.add(messageView, c);
+    }
+
+    private void setupHeading() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth = 2;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
+        c.insets = STANDARD_PADDING;
+        this.add(new JLabel("Testing site for JavaBot aka. Junior"), c);
     }
 
     private void setupMessageTable() {
@@ -100,7 +107,7 @@ public class ClientGui extends JFrame implements ChatWorker {
         messageTable.setVisible(true);
     }
 
-    private void initialize() {
+    private void bindListeners() {
         userInput.addKeyListener(new InputListener());
         submit.addActionListener(action -> {
             chatClient.newUserMessage(userInput.getText());
