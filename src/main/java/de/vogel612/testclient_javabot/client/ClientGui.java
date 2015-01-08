@@ -13,10 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.plaf.metal.MetalScrollPaneUI;
 
 import com.gmail.inverseconduit.chat.ChatWorker;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
+import de.vogel612.testclient_javabot.client.table.ChatCellRenderer;
 import de.vogel612.testclient_javabot.client.table.ChatTableModel;
 import de.vogel612.testclient_javabot.core.TestingChatClient;
 
@@ -40,6 +42,8 @@ public class ClientGui extends JFrame implements ChatWorker {
         messageTable = new JTable(tableModel);
         setupMessageTable();
         messageView = new JScrollPane(messageTable);
+        messageView.setAutoscrolls(true);
+        messageView.setUI(new MetalScrollPaneUI());
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
@@ -91,12 +95,14 @@ public class ClientGui extends JFrame implements ChatWorker {
         messageTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         messageTable.setAutoCreateColumnsFromModel(true);
         messageTable.setFillsViewportHeight(true);
-        messageTable.getColumnModel().getColumn(0).setResizable(false);
-
-        //FIXME: doesn't work... probably the ChatTableModel borks it...
-        messageTable.getColumnModel().getColumn(0).setMinWidth(60);
-        messageTable.getColumnModel().getColumn(0).setMaxWidth(90);
-        messageTable.getColumnModel().getColumn(0).setPreferredWidth(90);
+        messageTable.setDefaultRenderer(ChatMessage.class, new ChatCellRenderer());
+        messageTable.setAutoscrolls(true);
+        //        messageTable.getColumnModel().getColumn(0).setResizable(false);
+        //
+        //        //FIXME: doesn't work... probably the ChatTableModel borks it...
+        //        messageTable.getColumnModel().getColumn(0).setMinWidth(60);
+        //        messageTable.getColumnModel().getColumn(0).setMaxWidth(90);
+        //        messageTable.getColumnModel().getColumn(0).setPreferredWidth(90);
         messageTable.setVisible(true);
     }
 

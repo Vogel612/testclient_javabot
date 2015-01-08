@@ -14,13 +14,12 @@ public class ChatTableModel extends AbstractTableModel implements TableModel {
 
     @Override
     public String getColumnName(int index) {
-        if (index == 0) { return "Username"; }
-        return "Message";
+        return "Messages";
     }
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class ChatTableModel extends AbstractTableModel implements TableModel {
 
     @Override
     public Class< ? > getColumnClass(int column) {
-        return String.class;
+        return ChatMessage.class;
     }
 
     @Override
@@ -40,10 +39,7 @@ public class ChatTableModel extends AbstractTableModel implements TableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        //TODO: Validations??
-        final ChatMessage message = messages.get(row);
-        if (column == 0) { return message.getUsername(); }
-        return message.getMessage();
+        return messages.get(row);
     }
 
     public void addNewMessage(ChatMessage message) {
