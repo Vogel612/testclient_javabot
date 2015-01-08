@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.AdjustmentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -13,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.plaf.metal.MetalScrollPaneUI;
 
 import com.gmail.inverseconduit.chat.ChatWorker;
 import com.gmail.inverseconduit.datatype.ChatMessage;
@@ -43,7 +43,8 @@ public class ClientGui extends JFrame implements ChatWorker {
         setupMessageTable();
         messageView = new JScrollPane(messageTable);
         messageView.setAutoscrolls(true);
-        messageView.setUI(new MetalScrollPaneUI());
+        //Following line is adapted from http://stackoverflow.com/a/15784385/1803692
+        messageView.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> e.getAdjustable().setValue(e.getAdjustable().getMaximum()));
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
@@ -96,13 +97,6 @@ public class ClientGui extends JFrame implements ChatWorker {
         messageTable.setAutoCreateColumnsFromModel(true);
         messageTable.setFillsViewportHeight(true);
         messageTable.setDefaultRenderer(ChatMessage.class, new ChatCellRenderer());
-        messageTable.setAutoscrolls(true);
-        //        messageTable.getColumnModel().getColumn(0).setResizable(false);
-        //
-        //        //FIXME: doesn't work... probably the ChatTableModel borks it...
-        //        messageTable.getColumnModel().getColumn(0).setMinWidth(60);
-        //        messageTable.getColumnModel().getColumn(0).setMaxWidth(90);
-        //        messageTable.getColumnModel().getColumn(0).setPreferredWidth(90);
         messageTable.setVisible(true);
     }
 
@@ -122,7 +116,6 @@ public class ClientGui extends JFrame implements ChatWorker {
 
     @Override
     public boolean enqueueMessage(final ChatMessage chatMessage) {
-        System.out.println("Got a message enqueued: " + chatMessage.getMessage());
         tableModel.addNewMessage(chatMessage);
         return true;
     }

@@ -27,9 +27,6 @@ public class ChatCellRenderer implements TableCellRenderer {
         }
 
         JTextArea messageDisplay = new JTextArea(message.getMessage());
-        //        messageDisplay.setMinimumSize(new Dimension(230, 20));
-        //        messageDisplay.setMinimumSize(new Dimension(20, 230));
-        //        messageDisplay.setSize(new Dimension(20, 230));
         messageDisplay.setEditable(false);
         messageDisplay.setLineWrap(true);
         messageDisplay.doLayout();
