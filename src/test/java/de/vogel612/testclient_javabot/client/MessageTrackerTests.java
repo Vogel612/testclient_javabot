@@ -10,15 +10,15 @@ import org.junit.Test;
 
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
-import de.vogel612.testclient_javabot.core.TestingChatClient;
+import de.vogel612.testclient_javabot.core.MessageTracker;
 
-public class TestingChatClientTests {
+public class MessageTrackerTests {
 
     private static final String TEST_MESSAGE       = "TestMessage";
 
     private static final String OTHER_TEST_MESSAGE = "Some Test Message";
 
-    private TestingChatClient   cut                = TestingChatClient.getInstance();
+    private MessageTracker   cut                = MessageTracker.getInstance();
 
     @Before
     public void setup() {

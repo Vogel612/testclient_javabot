@@ -9,11 +9,11 @@ import java.util.stream.IntStream;
 
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
-public final class TestingChatClient {
+public final class MessageTracker {
 
     private static final int               LIMIT         = 200;
 
-    private static final TestingChatClient INSTANCE      = new TestingChatClient();
+    private static final MessageTracker INSTANCE      = new MessageTracker();
 
     private final ChatMessage[]            messages      = new ChatMessage[LIMIT];
 
@@ -21,7 +21,7 @@ public final class TestingChatClient {
 
     private final AtomicInteger            currentItem   = new AtomicInteger(0);
 
-    private TestingChatClient() {}
+    private MessageTracker() {}
 
     private long getLimit(final int from) {
         return (LIMIT - from + currentItem.get()) % LIMIT;
@@ -44,7 +44,7 @@ public final class TestingChatClient {
 
     public boolean newBotMessage(String message) {
         ChatMessage botMessage;
-        botMessage = BotMessageUtils.createFromString(message, "Junior");
+        botMessage = ChatMessageUtils.createFromString(message, "Junior");
         incrementAndWrap();
         messages[currentItem.get()] = botMessage;
         return true;
@@ -52,7 +52,7 @@ public final class TestingChatClient {
 
     public boolean newUserMessage(String message) {
         ChatMessage userMessage;
-        userMessage = BotMessageUtils.createFromString(message, "You");
+        userMessage = ChatMessageUtils.createFromString(message, "You");
         incrementAndWrap();
         messages[currentItem.get()] = userMessage;
         return true;
@@ -100,7 +100,7 @@ public final class TestingChatClient {
         return Arrays.asList(messages);
     }
 
-    public static TestingChatClient getInstance() {
+    public static MessageTracker getInstance() {
         return INSTANCE;
     }
 }

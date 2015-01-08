@@ -20,23 +20,24 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
 
 import de.vogel612.testclient_javabot.client.table.ChatCellRenderer;
 import de.vogel612.testclient_javabot.client.table.ChatTableModel;
-import de.vogel612.testclient_javabot.core.TestingChatClient;
+import de.vogel612.testclient_javabot.core.MessageTracker;
 
 public class ClientGui extends JFrame implements ChatWorker {
 
-    private static final Insets     STANDARD_PADDING = new Insets(10, 10, 10, 10);
+    private static final Insets  STANDARD_PADDING = new Insets(10, 10, 10, 10);
 
-    private final TestingChatClient chatClient       = TestingChatClient.getInstance();
+    //TODO: do we even need this? maybe going through ChatInterface is more favorable
+    private final MessageTracker chatClient       = MessageTracker.getInstance();
 
-    private final ChatTableModel    tableModel       = new ChatTableModel();
+    private final ChatTableModel tableModel       = new ChatTableModel();
 
-    private final JTable            messageTable;
+    private final JTable         messageTable;
 
-    private final JScrollPane       messageView;
+    private final JScrollPane    messageView;
 
-    private final JTextArea         userInput        = new JTextArea(3, 250);
+    private final JTextArea      userInput        = new JTextArea(3, 250);
 
-    private final JButton           submit           = new JButton("send");
+    private final JButton        submit           = new JButton("send");
 
     public ClientGui() {
         messageTable = new JTable(tableModel);

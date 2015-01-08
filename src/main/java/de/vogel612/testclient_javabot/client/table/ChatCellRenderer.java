@@ -34,7 +34,7 @@ public class ChatCellRenderer implements TableCellRenderer {
         cell.setMinimumSize(new Dimension(messageDisplay.getWidth() + usernameContainer.getWidth(), messageDisplay.getHeight()));
         cell.setDividerSize(1);
         cell.doLayout();
-        //FIXME height calculation needs improvement
+        //FIXME height calculation needs improvement, see ticket #3
         table.setRowHeight(row, 90);
         return cell;
     }

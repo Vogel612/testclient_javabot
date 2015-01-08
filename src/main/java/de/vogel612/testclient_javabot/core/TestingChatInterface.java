@@ -17,7 +17,7 @@ public class TestingChatInterface implements ChatInterface {
 
     private final Set<ChatWorker>   subscribers = new HashSet<>();
 
-    private final TestingChatClient fakeClient  = TestingChatClient.getInstance();
+    private final MessageTracker fakeClient  = MessageTracker.getInstance();
 
     @Override
     public void subscribe(ChatWorker subscriber) {
