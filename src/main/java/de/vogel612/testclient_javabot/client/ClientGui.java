@@ -1,6 +1,8 @@
 package de.vogel612.testclient_javabot.client;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -15,9 +17,10 @@ import com.gmail.inverseconduit.chat.ChatWorker;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
 import de.vogel612.testclient_javabot.client.controller.ChatRenderController;
-import de.vogel612.testclient_javabot.core.ChatMessageUtils;
 
 public class ClientGui implements ChatWorker {
+	
+	private static final Logger LOGGER = Logger.getLogger(ClientGui.class.getName());
 	
 	private ChatRenderController controller;
 	private JFrame frame;
@@ -54,8 +57,7 @@ public class ClientGui implements ChatWorker {
 								initFX(fxPanel);
 								latch.countDown();
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								LOGGER.log(Level.SEVERE, "Exception in creating JavaFX thread", e);
 							}
 	                    }
 	               });
@@ -63,7 +65,7 @@ public class ClientGui implements ChatWorker {
 	        });
 			latch.await();
 		} catch (InterruptedException iep) {
-			//Add Logging
+			LOGGER.log(Level.SEVERE, "Exception in waiting for Latch", iep);
 		}
 	}
 	
@@ -80,7 +82,7 @@ public class ClientGui implements ChatWorker {
                 try {
                 	controller.addMessage(chatMessage);
                 } catch(Exception e) {
-                	
+                	LOGGER.log(Level.SEVERE, "Exception in adding message to chat window : ", e);
                 }
             }
         });
