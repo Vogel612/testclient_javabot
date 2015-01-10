@@ -43,7 +43,7 @@ public class ClientGui implements ChatWorker {
 			SwingUtilities.invokeLater(new Runnable() {
 	            @Override
 	            public void run() {
-	            	frame = new JFrame("Swing and JavaFX");
+	            	frame = new JFrame("TestClient for Junior");
 	                final JFXPanel fxPanel = new JFXPanel();
 	                frame.add(fxPanel);
 	                frame.setSize(550, 421);
