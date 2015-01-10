@@ -13,7 +13,9 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
  * overwrite older messages.<br/>
  * This class has been under review at <a
  * href="http://codereview.stackexchange.com/questions/77127">Codereview SE</a><br/>
- * Special thanks to CodeReview User rolfl, for finding multiple bugs and
+ * Special thanks to CodeReview User <a
+ * href="http://codereview.stackexchange.com/users/31503/rolfl">rolfl</a>, for
+ * finding multiple bugs and
  * providing a wonderful alternative. <br/>
  * <br/>
  * The code following is an adaption of the excellent <a
@@ -54,8 +56,8 @@ public final class MessageTracker {
 			// correct broken input with recursion
 			return newMessages(0l);
 		}
-		if (since >= currentMessage) { return Collections.emptyList(); }
 		synchronized (circularBuffer) {
+			if (since >= currentMessage) { return Collections.emptyList(); }
 			final int reportCount = (int) Math.min(size, currentMessage - since);
 			final List<ChatMessage> result = new ArrayList<>(reportCount);
 
