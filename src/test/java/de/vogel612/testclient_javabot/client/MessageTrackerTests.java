@@ -85,7 +85,7 @@ public class MessageTrackerTests {
 	}
 
 	@Test
-	public void newMessagesWrapsAroundAndIgnoresNullMessages() {
+	public void newMessagesReturnsEmptyListForImpossibleSince() {
 		cut.newUserMessage(TEST_MESSAGE);
 
 		List<ChatMessage> actual = cut.newMessages(150);

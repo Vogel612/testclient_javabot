@@ -1,84 +1,94 @@
 package de.vogel612.testclient_javabot.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntSupplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
+/**
+ * Class keeping track of the messages currently in the system. This class can
+ * hold up to 200 messages in a circular buffer. Any more added messages
+ * overwrite older messages.<br/>
+ * This class has been under review at <a
+ * href="http://codereview.stackexchange.com/questions/77127">Codereview SE</a><br/>
+ * Special thanks to CodeReview User rolfl, for finding multiple bugs and
+ * providing a wonderful alternative. <br/>
+ * <br/>
+ * The code following is an adaption of the excellent <a
+ * href="http://codereview.stackexchange.com/a/77136/37660">answer</a> he as
+ * given.
+ * 
+ * @author Vogel612<<a href="mailto:vogel612@gmx.de"
+ *         >vogel612@gmx.de</a>>
+ */
 public final class MessageTracker {
-
-	private static final int LIMIT = 200;
 
 	private static final MessageTracker INSTANCE = new MessageTracker();
 
-	private final ChatMessage[] messages = new ChatMessage[LIMIT];
+	private static final int CAPACITY = 200;
+	private final ChatMessage[] circularBuffer = new ChatMessage[CAPACITY];
 
-	private final AtomicInteger lastQueryTime = new AtomicInteger(0);
-
-	private final AtomicInteger currentItem = new AtomicInteger(0);
+	private long lastMessageReported = 0;
+	private long currentMessage = 0;
+	private int size = 0;
 
 	private MessageTracker() {}
 
-	private long getLimit(final int from) {
-		return (LIMIT - from + currentItem.get()) % LIMIT;
+	public List<ChatMessage> getMessages() {
+		synchronized (circularBuffer) {
+			// let the system figure it out
+			return newMessages(currentMessage - CAPACITY);
+		}
 	}
 
 	public List<ChatMessage> newMessages() {
-		return newMessages(lastQueryTime.get());
-	}
-
-	public List<ChatMessage> newMessages(final int since) {
-		final List<ChatMessage> newMessages;
-		final long limit = getLimit(since);
-		synchronized (messages) {
-			newMessages =
-					IntStream.generate(new Counter(since)).limit(limit).mapToObj(i -> messages[i]).filter(e -> e != null && !e.getMessage().isEmpty()).collect(Collectors.toList());
+		synchronized (circularBuffer) {
+			return newMessages(lastMessageReported);
 		}
-		lastQueryTime.lazySet(currentItem.get());
-		return newMessages;
 	}
 
-	public boolean newBotMessage(final String message) {
-		ChatMessage botMessage;
-		botMessage = ChatMessageUtils.createFromString(message, "Junior");
-		incrementAndWrap();
-		messages[currentItem.get()] = botMessage;
-		return true;
-	}
-
-	public boolean newUserMessage(final String message) {
-		ChatMessage userMessage;
-		userMessage = ChatMessageUtils.createFromString(message, "You");
-		incrementAndWrap();
-		messages[currentItem.get()] = userMessage;
-		return true;
-	}
-
-	private final class Counter implements IntSupplier {
-
-		private int current;
-
-		Counter(int start) {
-			current = start;
+	public List<ChatMessage> newMessages(final long since) {
+		if (since < 0) {
+			// correct broken input with recursion
+			return newMessages(0l);
 		}
+		if (since >= currentMessage) { return Collections.emptyList(); }
+		synchronized (circularBuffer) {
+			final int reportCount = (int) Math.min(size, currentMessage - since);
+			final List<ChatMessage> result = new ArrayList<>(reportCount);
 
-		@Override
-		public int getAsInt() {
-			current = incrementAndWrap(current);
-			return current;
-		}
-
-		private final int incrementAndWrap(int item) {
-			item++ ;
-			if (item == LIMIT) {
-				item = 0;
+			int offset = (int) ( (currentMessage - reportCount + 1) % CAPACITY);
+			for (int i = 0; i < reportCount; i++ ) {
+				result.add(circularBuffer[offset]);
+				offset = (offset + 1) % CAPACITY;
 			}
-			return item;
+			// remove unhelpful messages from the results 
+			result.removeIf(message -> message == null || message.getMessage().isEmpty());
+
+			lastMessageReported = currentMessage;
+			return Collections.unmodifiableList(result);
 		}
+	}
+
+	private boolean addMessage(final ChatMessage message) {
+		synchronized (circularBuffer) {
+			currentMessage++ ;
+			circularBuffer[(int) (currentMessage % CAPACITY)] = message;
+			if (size < CAPACITY) {
+				size++ ;
+			}
+		}
+		return true;
+	}
+
+	public boolean newBotMessage(String message) {
+		return addMessage(ChatMessageUtils.createFromString(message, "Junior"));
+	}
+
+	public boolean newUserMessage(String message) {
+		return addMessage(ChatMessageUtils.createFromString(message, "You"));
 	}
 
 	/**
@@ -86,18 +96,9 @@ public final class MessageTracker {
 	 * will be lost.
 	 */
 	public void reset() {
-		currentItem.lazySet(0);
-		lastQueryTime.lazySet(0);
-		// no need to reset messages ;)
-	}
-
-	private final void incrementAndWrap() {
-		currentItem.incrementAndGet();
-		currentItem.compareAndSet(LIMIT, 0);
-	}
-
-	public List<ChatMessage> getMessages() {
-		return Arrays.asList(messages);
+		currentMessage = 0;
+		lastMessageReported = 0;
+		Arrays.fill(circularBuffer, null);
 	}
 
 	public static MessageTracker getInstance() {

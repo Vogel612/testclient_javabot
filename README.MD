@@ -13,3 +13,7 @@ Only issues concerning the TestClient will be accepted here.
 
 This currently requires an existing and `mvn install`-ed JavaBot (instructions can be found in SETUP.MD) on your local machine to run, mostly since Junior is not accessible in any public maven repo yet.
 It can be run simply by executing `mvn exec:java` to start up with the currently availably state of Junior
+
+# Special Thanks:
+
+- Codereview user [rolfl](http://codereview.stackexchange.com/users/31503/rolfl), for providing an excellent review and reimplementation of MessageTracker.java (see it's javadoc)
