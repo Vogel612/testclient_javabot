@@ -9,9 +9,9 @@
    <center>
       <SplitPane dividerPositions="0.8353221957040573" orientation="VERTICAL" prefHeight="267.0" prefWidth="291.0" BorderPane.alignment="CENTER">
         <items>
-            <ScrollPane fx:id="chatWindowScroll" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+            <ScrollPane fx:id="chatWindowScroll" hbarPolicy="NEVER">
                <content>
-                  <VBox fx:id="chatWindow" prefHeight="343.0" prefWidth="542.0" spacing="10.0" />
+                  <VBox fx:id="chatWindow" spacing="10.0" />
                </content>
             </ScrollPane>
             <HBox fx:id="bottomSection" maxHeight="65.0">

@@ -9,28 +9,22 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
 
 public class MessageBox extends HBox {
 	
-	private Text name;
-	private Label message;
+	private final Text name = new Text();
+	private final Label message = new Label();
 	
 	public MessageBox(ChatMessage chatMessage) {
-		init();
 		name.setText(chatMessage.getUsername());
-		message = new Label(chatMessage.getMessage());
+		message.setText(chatMessage.getMessage());
 		setLayout();
 		getChildren().addAll(name, message);
 	}
 	
-	private void init() {
-		name = new Text();
-	}
-	
 	private void setLayout() {
 		message.setWrapText(true);
-		getStyleClass().add("userInput");
 		name.getStyleClass().add("fancytext");
 		minHeight(50);
 		setAlignment(Pos.CENTER_LEFT);
+		getStyleClass().add("userInput");
 	}
-	
 }
 
