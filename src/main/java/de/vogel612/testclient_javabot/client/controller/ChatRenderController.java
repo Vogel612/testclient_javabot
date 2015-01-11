@@ -61,6 +61,11 @@ public class ChatRenderController implements Initializable {
 	@FXML
 	public void enterPressed(KeyEvent event) {
 		if(event.getCode() == KeyCode.ENTER) {
+			if (event.isShiftDown()) {
+				// make a newline for it
+				userInput.appendText("\r\n");
+				return;
+			}
 			submit();
 			event.consume();
 		}
