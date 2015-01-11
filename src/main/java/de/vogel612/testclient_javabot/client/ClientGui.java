@@ -72,6 +72,7 @@ public class ClientGui implements ChatWorker {
 
 	public void start() {
 		frame.setVisible(true);
+		Platform.runLater(() -> controller.bindVvalue());
 	}
 
 	@Override

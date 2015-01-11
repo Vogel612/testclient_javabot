@@ -46,7 +46,6 @@ public class ChatRenderController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		chatWindow.prefWidthProperty().bind(window.widthProperty());
 		chatClient = MessageTracker.getInstance();
-		chatWindowScroll.vvalueProperty().bind(chatWindow.heightProperty());
 	}
 	
 	@FXML
@@ -76,5 +75,9 @@ public class ChatRenderController implements Initializable {
 		messageBox.prefWidthProperty().bind(window.widthProperty().subtract(50));
 		chatWindow.getChildren().add(messageBox);
 	}
-
+	
+	public void bindVvalue(){
+		chatWindowScroll.vvalueProperty().bind(chatWindow.heightProperty());
+	}
+	
 }
