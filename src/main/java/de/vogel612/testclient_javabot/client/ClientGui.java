@@ -28,13 +28,13 @@ public class ClientGui implements ChatWorker {
 
 	public void initFX(JFXPanel fxPanel) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(
-	               "/de/vogel612/testclient_javabot/client/fxml/ChatRender.fxml"));
+	               "/fxml/ChatRender.fxml"));
 		BorderPane borderPane = (BorderPane)loader.load();
 		controller = loader.getController();
 		Scene scene = new Scene(borderPane);
-		scene.getStylesheets().add(getClass().getResource("/de/vogel612/testclient_javabot/client/style/style.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/style/style.css").toExternalForm());
 		// Remove this to disable the dark theme
-		scene.getStylesheets().add(getClass().getResource("/de/vogel612/testclient_javabot/client/style/darkTheme.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/style/darkTheme.css").toExternalForm());
 		fxPanel.setScene(scene);
 	}
 	
