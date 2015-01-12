@@ -90,8 +90,7 @@ public class MessageTrackerTests {
 
 		List<ChatMessage> actual = cut.newMessages(150);
 
-		assertTrue(actual.size() == 1);
-		assertEquals(TEST_MESSAGE, actual.get(0).getMessage());
+		assertTrue(actual.isEmpty());
 	}
 
 	@Test
