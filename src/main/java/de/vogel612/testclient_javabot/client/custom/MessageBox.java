@@ -8,17 +8,17 @@ import javafx.scene.text.Text;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
 public class MessageBox extends HBox {
-	
+
 	private final Text name = new Text();
 	private final Label message = new Label();
-	
-	public MessageBox(ChatMessage chatMessage) {
+
+	public MessageBox(final ChatMessage chatMessage) {
 		name.setText(chatMessage.getUsername());
 		message.setText(chatMessage.getMessage());
 		setLayout();
 		getChildren().addAll(name, message);
 	}
-	
+
 	private void setLayout() {
 		message.setWrapText(true);
 		name.getStyleClass().add("fancytext");
@@ -27,4 +27,3 @@ public class MessageBox extends HBox {
 		getStyleClass().add("userInput");
 	}
 }
-

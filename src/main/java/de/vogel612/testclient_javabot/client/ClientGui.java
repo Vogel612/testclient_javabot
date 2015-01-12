@@ -26,27 +26,20 @@ public class ClientGui implements ChatWorker {
 	private JFrame frame;
 	final CountDownLatch latch = new CountDownLatch(1);
 
-	public void initFX(JFXPanel fxPanel) throws Exception {
+	public void initFX(final JFXPanel fxPanel) throws Exception {
 		//Loading the FXML
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(
-				"/fxml/ChatRender.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatRender.fxml"));
 		BorderPane borderPane = (BorderPane) loader.load();
 		controller = loader.getController();
 		Scene scene = new Scene(borderPane);
-		scene.getStylesheets().add(
-				getClass().getResource("/style/style.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/style/style.css").toExternalForm());
 		// Remove this to disable the dark theme
-		scene.getStylesheets()
-				.add(getClass().getResource("/style/darkTheme.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/style/darkTheme.css").toExternalForm());
 		fxPanel.setScene(scene);
 	}
 
 	public ClientGui() {
 		try {
-			/** To-Do
-			 * 
-			 * 	Remove the Swing Dependency 
-			 */
 			Executors.newSingleThreadExecutor().execute(() -> {
 				frame = new JFrame("TestClient for Junior");
 				final JFXPanel fxPanel = new JFXPanel();
@@ -59,17 +52,18 @@ public class ClientGui implements ChatWorker {
 					try {
 						initFX(fxPanel);
 						latch.countDown();
-					} catch (Exception e) {
+					} catch(Exception e) {
 						LOGGER.log(Level.SEVERE, "Exception in creating JavaFX thread", e);
 					}
 				});
 			});
 			latch.await();
-		} catch (InterruptedException iep) {
+		} catch(InterruptedException iep) {
 			LOGGER.log(Level.SEVERE, "Exception in waiting for Latch", iep);
 		}
 	}
 
+	@Override
 	public void start() {
 		frame.setVisible(true);
 		Platform.runLater(() -> controller.bindVvalue());
@@ -80,7 +74,7 @@ public class ClientGui implements ChatWorker {
 		Platform.runLater(() -> {
 			try {
 				controller.addMessage(chatMessage);
-			} catch (Exception e) {
+			} catch(Exception e) {
 				LOGGER.log(Level.SEVERE, "Exception in adding message to chat window : ", e);
 			}
 		});

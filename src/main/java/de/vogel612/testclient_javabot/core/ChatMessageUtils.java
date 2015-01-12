@@ -7,10 +7,10 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
 
 public class ChatMessageUtils {
 
-    private static final AtomicLong generator = new AtomicLong(0);
+	private static final AtomicLong generator = new AtomicLong(0);
 
-    public static ChatMessage createFromString(String message, String username) {
-        return new ChatMessage(SESite.STACK_OVERFLOW, 1, "offline-testing", username, 1, message, generator.incrementAndGet());
-    }
+	public static ChatMessage createFromString(final String message, final String username) {
+		return new ChatMessage(SESite.STACK_OVERFLOW, 1, "offline-testing", username, 1, message, generator.incrementAndGet());
+	}
 
 }

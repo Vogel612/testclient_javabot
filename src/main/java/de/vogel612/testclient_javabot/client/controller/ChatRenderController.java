@@ -21,45 +21,44 @@ import de.vogel612.testclient_javabot.core.ChatMessageUtils;
 import de.vogel612.testclient_javabot.core.MessageTracker;
 
 public class ChatRenderController implements Initializable {
-	
+
 	@FXML
 	private BorderPane window;
-	
+
 	@FXML
 	private Button submit;
-	
+
 	@FXML
 	private TextArea userInput;
-	
+
 	@FXML
 	private VBox chatWindow;
-	
-	@FXML 
+
+	@FXML
 	private HBox bottomSection;
-	
+
 	@FXML
 	private ScrollPane chatWindowScroll;
-	
-	private MessageTracker chatClient;
-	
+
+	private final MessageTracker chatClient = MessageTracker.getInstance();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		chatWindow.prefWidthProperty().bind(window.widthProperty());
-		chatClient = MessageTracker.getInstance();
 	}
-	
+
 	@FXML
 	public void submit() {
-		if(!userInput.getText().equals("")) {
+		if ( !userInput.getText().equals("")) {
 			chatClient.newUserMessage(userInput.getText());
 			userInput.clear();
 			userInput.requestFocus();
 		}
 	}
-	
+
 	@FXML
-	public void enterPressed(KeyEvent event) {
-		if(event.getCode() == KeyCode.ENTER) {
+	public void enterPressed(final KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
 			if (event.isShiftDown()) {
 				// make a newline for it
 				userInput.appendText("\r\n");
@@ -69,15 +68,15 @@ public class ChatRenderController implements Initializable {
 			event.consume();
 		}
 	}
-	
-	public void addMessage(ChatMessage chatMessage) {
+
+	public void addMessage(final ChatMessage chatMessage) {
 		MessageBox messageBox = new MessageBox(ChatMessageUtils.createFromString(chatMessage.getMessage(), chatMessage.getUsername()));
 		messageBox.prefWidthProperty().bind(window.widthProperty().subtract(50));
 		chatWindow.getChildren().add(messageBox);
 	}
-	
-	public void bindVvalue(){
+
+	public void bindVvalue() {
 		chatWindowScroll.vvalueProperty().bind(chatWindow.heightProperty());
 	}
-	
+
 }
