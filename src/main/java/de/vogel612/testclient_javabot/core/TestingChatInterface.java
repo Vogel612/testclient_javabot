@@ -13,6 +13,18 @@ import com.gmail.inverseconduit.datatype.ChatDescriptor;
 import com.gmail.inverseconduit.datatype.CredentialsProvider;
 import com.gmail.inverseconduit.datatype.ProviderDescriptor;
 
+/**
+ * Our Custom implementation of the JavaBot's {@link ChatInterface}. The only
+ * effectively implemented methods are: {@link #subscribe(ChatWorker) subscribe}
+ * , {@link #unSubscribe(ChatWorker) unSubscribe}, {@link #queryMessages()
+ * queryMessages}, {@link #sendMessage(ChatDescriptor, String) sendMessage},
+ * {@link #broadcast(String) broadcast} and {@link #getSubscriptions()
+ * getSubscriptions}.
+ * All other methods return default or "success" values
+ * 
+ * @author Vogel612<<a href="mailto:vogel612@gmx.de"
+ *         >vogel612@gmx.de</a>>
+ */
 public class TestingChatInterface implements ChatInterface {
 
 	private static final Logger LOGGER = Logger.getLogger(TestingChatInterface.class.getName());

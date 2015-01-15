@@ -13,6 +13,18 @@ import com.gmail.inverseconduit.commands.sets.CoreBotCommands;
 import de.vogel612.testclient_javabot.client.ClientGui;
 import de.vogel612.testclient_javabot.core.TestingChatInterface;
 
+/**
+ * Class responsible for making things know each other. This class is the core
+ * of the testclient. It's strongly oriented towards
+ * {@link com.gmail.inverseconduit.bot.Program JavaBot's Program}, and basically
+ * accomplishes the same tasks, just adapted to the needs of the testclient.
+ * This includes firing up the {@link DefaultBot actual Bot} in JavaBot and
+ * wiring it to the {@link TestingChatInterface}. Additionally the
+ * {@link ClientGui} is started here and the {@link CommandHandle Commands} are added to the bot.
+ * 
+ * @author Vogel612<<a href="mailto:vogel612@gmx.de"
+ *         >vogel612@gmx.de</a>>
+ */
 public class TestProgram {
 
 	private static final Logger LOGGER = Logger.getLogger(TestProgram.class.getName());

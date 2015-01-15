@@ -63,12 +63,18 @@ public class ClientGui implements ChatWorker {
 		}
 	}
 
+	/**
+	 * {@see ChatWorker#start()}
+	 */
 	@Override
 	public void start() {
 		frame.setVisible(true);
 		Platform.runLater(() -> controller.bindVvalue());
 	}
 
+	/**
+	 * {@see ChatWorker#enqueueMessage(ChatMessage)}
+	 */
 	@Override
 	public boolean enqueueMessage(ChatMessage chatMessage) {
 		Platform.runLater(() -> {

@@ -20,7 +20,8 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
  * <br/>
  * The code following is an adaption of the excellent <a
  * href="http://codereview.stackexchange.com/a/77136/37660">answer</a> he as
- * given.
+ * given.<br/>
+ * FIXME: add license notice!
  * 
  * @author Vogel612<<a href="mailto:vogel612@gmx.de"
  *         >vogel612@gmx.de</a>>
@@ -38,6 +39,14 @@ public final class MessageTracker {
 
 	private MessageTracker() {}
 
+	/**
+	 * Returns the up to 200 latest messages in chronological order. If less
+	 * than 200 messages are in the Tracker, only these messages are returned. <br/>
+	 * <br/>
+	 * Empty Messages are ignored.
+	 * 
+	 * @return an unmodifiable List of messages
+	 */
 	public List<ChatMessage> getMessages() {
 		synchronized (circularBuffer) {
 			// let the system figure it out
@@ -45,12 +54,42 @@ public final class MessageTracker {
 		}
 	}
 
+	/**
+	 * Returns the messages that were added since the last time <i>any</i> of
+	 * {@link #getMessages()}, {@link #newMessages(long)} or
+	 * {@link #newMessages()} was called in chronological order.
+	 * The absolute maximum number of returned messages is 200.<br/>
+	 * <br/>
+	 * Empty Messages are ignored.
+	 * 
+	 * @return an unmodifiable List of messages
+	 */
 	public List<ChatMessage> newMessages() {
 		synchronized (circularBuffer) {
 			return newMessages(lastMessageReported);
 		}
 	}
 
+	/**
+	 * Returns the messages since a given message in chronological order. If
+	 * more than 200 messages were added since the given message, the count of
+	 * messages is reduced by 200 until less than 200 messages remain for
+	 * returning.<br/>
+	 * This means: <br/>
+	 * Assuming there were <b>450</b> messages added to the Tracker, calling
+	 * this
+	 * method with since as <b>200</b> returns a list of <b>50</b> messages.<br/>
+	 * <br/>
+	 * Empty Messages are ignored in the resultset, but not in the calculation
+	 * of the number of messages to return.<br/>
+	 * Assuming message <b>400</b> through to <b>420</b> were empty, the result
+	 * only contains
+	 * <b>30</b> messages.
+	 * 
+	 * @param since
+	 *        the long "identifier" of the message to take as starting point
+	 * @return an unmodifiable List of messages
+	 */
 	public List<ChatMessage> newMessages(final long since) {
 		if (since < 0) {
 			// correct broken input with recursion
@@ -74,6 +113,17 @@ public final class MessageTracker {
 		}
 	}
 
+	/**
+	 * Adds a {@link ChatMessage} to the MessageTracker. Messages lieing back
+	 * over 200
+	 * messages get irredeemably overwritten. Adding null overwrites the oldest
+	 * message.
+	 * 
+	 * @param message
+	 *        the message to be added. May be null
+	 * @return a boolean indicating success or failure
+	 */
+	//FIXME why is this returning a boolean? make it return currentMessage!
 	private boolean addMessage(final ChatMessage message) {
 		synchronized (circularBuffer) {
 			currentMessage++ ;
@@ -85,10 +135,28 @@ public final class MessageTracker {
 		return true;
 	}
 
+	/**
+	 * Allows adding a new message, pretending it's coming from the Bot. It will
+	 * be assigned the username "Junior"
+	 * 
+	 * @param message
+	 *        a String containing the message text
+	 * @return a boolean indicating success or failure
+	 */
+	//FIXME: boolean return? state-machine!
 	public boolean newBotMessage(String message) {
 		return addMessage(ChatMessageUtils.createFromString(message, "Junior"));
 	}
 
+	/**
+	 * Allows adding a new message coming from the User. It will be assigned the
+	 * Username "you"
+	 * 
+	 * @param message
+	 *        a String containing the message text
+	 * @return a boolean indicating success or failure
+	 */
+	//FIXME: boolean return yet again!
 	public boolean newUserMessage(String message) {
 		return addMessage(ChatMessageUtils.createFromString(message, "You"));
 	}
@@ -103,6 +171,11 @@ public final class MessageTracker {
 		Arrays.fill(circularBuffer, null);
 	}
 
+	/**
+	 * Grabs the available instance of MessageTracker.
+	 * 
+	 * @return the only available MessageTracker
+	 */
 	public static MessageTracker getInstance() {
 		return INSTANCE;
 	}
