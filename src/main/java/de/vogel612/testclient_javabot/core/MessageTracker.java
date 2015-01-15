@@ -7,6 +7,14 @@ import java.util.List;
 
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
+/*
+ * This file is exempt from the Project's general License clause and instead
+ * Licensed under the Creative Commons Attribution ShareAlike License, Version
+ * 4.0 (The "CC-License")
+ * The CC-License is obtainable from
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ * and additionally available in the file "CC-BY-SA_License.txt"
+ */
 /**
  * Class keeping track of the messages currently in the system. This class can
  * hold up to 200 messages in a circular buffer. Any more added messages
@@ -21,7 +29,6 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
  * The code following is an adaption of the excellent <a
  * href="http://codereview.stackexchange.com/a/77136/37660">answer</a> he as
  * given.<br/>
- * FIXME: add license notice!
  * 
  * @author Vogel612<<a href="mailto:vogel612@gmx.de"
  *         >vogel612@gmx.de</a>>
