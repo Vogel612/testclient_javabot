@@ -14,7 +14,9 @@ import com.gmail.inverseconduit.commands.sets.CoreBotCommands;
 import de.vogel612.testclient_javabot.client.ClientGui;
 import de.vogel612.testclient_javabot.core.TestingChatInterface;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Class responsible for making things know each other. This class is the core
@@ -58,6 +60,14 @@ public class TestProgram {
         LOGGER.info("Basic component setup completed, beginning command glueing.");
         new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
         LOGGER.info("Glued Core Commands");
+
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				dispose();
+			}
+		});
+
 	}
 
 	public void startup() {
@@ -81,8 +91,8 @@ public class TestProgram {
 		Logger.getAnonymousLogger().info("querying thread started");
 	}
 
-	public void dispose() throws Exception {
-		executor.shutdown();
+	public void dispose() {
+		executor.shutdownNow();
 	}
 
 }
