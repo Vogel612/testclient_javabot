@@ -11,8 +11,10 @@ import com.gmail.inverseconduit.AppContext;
 import com.gmail.inverseconduit.BotConfig;
 import com.gmail.inverseconduit.security.ScriptSecurityManager;
 import com.gmail.inverseconduit.security.ScriptSecurityPolicy;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public final class Main {
+public final class Main extends Application {
 
 	public static final void main(final String[] args) {
 		setupLogging();
@@ -23,10 +25,7 @@ public final class Main {
 		BotConfig config = loadConfig();
 		AppContext.INSTANCE.add(config);
 
-		TestProgram p = new TestProgram();
-		AppContext.INSTANCE.add(p);
-
-		p.startup();
+		launch(Main.class);
 	}
 
 	private static BotConfig loadConfig() {
@@ -57,5 +56,13 @@ public final class Main {
 		for (Handler handler : global.getHandlers()) {
 			handler.setFilter(filter);
 		}
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		TestProgram p = new TestProgram(primaryStage);
+		AppContext.INSTANCE.add(p);
+
+		p.startup();
 	}
 }
