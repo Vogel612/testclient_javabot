@@ -6,17 +6,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import javafx.event.EventHandler;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import com.gmail.inverseconduit.AppContext;
 import com.gmail.inverseconduit.bot.DefaultBot;
 import com.gmail.inverseconduit.chat.ChatInterface;
+import com.gmail.inverseconduit.commands.CommandHandle;
 import com.gmail.inverseconduit.commands.sets.CoreBotCommands;
 
 import de.vogel612.testclient_javabot.client.ClientGui;
 import de.vogel612.testclient_javabot.core.TestingChatInterface;
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * Class responsible for making things know each other. This class is the core
@@ -46,14 +47,12 @@ public class TestProgram {
 		LOGGER.info("instantiating TestProgram class");
         AppContext.INSTANCE.add(chatInterface);
         bot = new DefaultBot(chatInterface);
-
 		gui = new ClientGui();
 		try {
-			gui.start(stage);
+			gui.init(stage);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		LOGGER.info("awaiting latch");
 
         chatInterface.subscribe(bot);
         chatInterface.subscribe(gui);
@@ -61,10 +60,13 @@ public class TestProgram {
         new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
         LOGGER.info("Glued Core Commands");
 
+        // Used to shut down the executor when the window is closed
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
+				LOGGER.info("Closing Window");
 				dispose();
+				LOGGER.info("Junior Client - Bye Bye!");
 			}
 		});
 
@@ -75,7 +77,6 @@ public class TestProgram {
 		scheduleQueryingThread();
 		bot.start();
 		gui.start();
-
 		LOGGER.info("Startup successfully completed");
 	}
 
@@ -90,8 +91,12 @@ public class TestProgram {
 		}, 3, 1, TimeUnit.SECONDS);
 		Logger.getAnonymousLogger().info("querying thread started");
 	}
-
+	
+	/**
+	 * Shuts down the executor
+	 */
 	public void dispose() {
+		LOGGER.info("Shutting down Executor");
 		executor.shutdownNow();
 	}
 

@@ -1,11 +1,9 @@
 package de.vogel612.testclient_javabot.client;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,18 +15,29 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
 
 import de.vogel612.testclient_javabot.client.controller.ChatRenderController;
 
-public class ClientGui extends Application implements ChatWorker {
+/**
+ * Class responsible for loading the FXML and creating an JavaFX test client scene
+ * for the JavaBot.
+ * 
+ * @author itachi<<a href="mailto:abhinay_agarwal@live.com"
+ *         >abhinay_agarwal@live.com</a>>
+ *
+ */
+public class ClientGui implements ChatWorker {
 
 	private static final Logger LOGGER = Logger.getLogger(ClientGui.class.getName());
 
 	private ChatRenderController controller;
 	private Stage stage;
-
-	public ClientGui() {
-	}
 	
-	@Override
-	public void start(Stage stage) throws IOException {
+	/**
+	 * Loads FXML and css, creates a scene and plugs it into the stage 
+	 * <br/>
+	 * 
+	 * @throws IOException
+	 */
+	public void init(Stage stage) throws IOException {
+		LOGGER.info("Loading fxml and css");
 		this.stage = stage;
 		//Loading the FXML
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatRender.fxml"));
@@ -39,6 +48,7 @@ public class ClientGui extends Application implements ChatWorker {
 		// Remove this to disable the dark theme
 		scene.getStylesheets().add(getClass().getResource("/style/darkTheme.css").toExternalForm());
 		stage.setScene(scene);
+		LOGGER.info("ClientGui loaded successfully");
 	}
 
 	/**
@@ -46,10 +56,8 @@ public class ClientGui extends Application implements ChatWorker {
 	 */
 	@Override
 	public void start() {
-		Platform.runLater(() -> {
-			stage.show();
-			controller.bindVvalue();
-		});
+		stage.show();
+		controller.bindVvalue();
 	}
 
 	/**

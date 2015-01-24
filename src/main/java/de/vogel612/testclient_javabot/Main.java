@@ -14,6 +14,10 @@ import com.gmail.inverseconduit.security.ScriptSecurityPolicy;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Entry point of Application. Class responsible for creating an JavaFX Application thread
+ * This class extends {@link Application}. 
+ */
 public final class Main extends Application {
 
 	public static final void main(final String[] args) {
@@ -62,7 +66,6 @@ public final class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		TestProgram p = new TestProgram(primaryStage);
 		AppContext.INSTANCE.add(p);
-
 		p.startup();
 	}
 }
