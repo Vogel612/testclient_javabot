@@ -64,12 +64,10 @@ public class TestProgram {
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
-				LOGGER.info("Closing Window");
 				dispose();
 				LOGGER.info("Junior Client - Bye Bye!");
 			}
 		});
-
 	}
 
 	public void startup() {
@@ -99,5 +97,4 @@ public class TestProgram {
 		LOGGER.info("Shutting down Executor");
 		executor.shutdownNow();
 	}
-
 }
