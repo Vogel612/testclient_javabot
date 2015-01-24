@@ -1,5 +1,6 @@
 package de.vogel612.testclient_javabot.client;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class ClientGui extends Application implements ChatWorker {
 	}
 	
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) throws IOException {
 		this.stage = stage;
 		//Loading the FXML
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatRender.fxml"));
