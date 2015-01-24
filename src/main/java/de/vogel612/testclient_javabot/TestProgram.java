@@ -1,5 +1,6 @@
 package de.vogel612.testclient_javabot;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,10 @@ import com.gmail.inverseconduit.commands.sets.CoreBotCommands;
 
 import de.vogel612.testclient_javabot.client.ClientGui;
 import de.vogel612.testclient_javabot.core.TestingChatInterface;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Class responsible for making things know each other. This class is the core
@@ -37,25 +42,32 @@ public class TestProgram {
 
 	private final ClientGui gui;
 
-	public TestProgram() {
+	public TestProgram(Stage stage) {
 		LOGGER.info("instantiating TestProgram class");
-        try{
-	        AppContext.INSTANCE.add(chatInterface);
-	        bot = new DefaultBot(chatInterface);
-	        Executors.newSingleThreadExecutor().execute(() -> {
-	        	ClientGui.launch(ClientGui.class);
-			});
-	        ClientGui.latch.await();
-	        gui = ClientGui.getInstance();
-	        chatInterface.subscribe(bot);
-	        chatInterface.subscribe(gui);
-	        LOGGER.info("Basic component setup completed, beginning command glueing.");
-	        new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
-        }
-        catch(InterruptedException die) {
-        	throw new RuntimeException(die);
-        }
+        AppContext.INSTANCE.add(chatInterface);
+        bot = new DefaultBot(chatInterface);
+
+		gui = new ClientGui();
+		try {
+			gui.start(stage);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		LOGGER.info("awaiting latch");
+
+        chatInterface.subscribe(bot);
+        chatInterface.subscribe(gui);
+        LOGGER.info("Basic component setup completed, beginning command glueing.");
+        new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
         LOGGER.info("Glued Core Commands");
+
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				dispose();
+			}
+		});
+
 	}
 
 	public void startup() {
@@ -79,8 +91,8 @@ public class TestProgram {
 		Logger.getAnonymousLogger().info("querying thread started");
 	}
 
-	public void dispose() throws Exception {
-		executor.shutdown();
+	public void dispose() {
+		executor.shutdownNow();
 	}
 
 }

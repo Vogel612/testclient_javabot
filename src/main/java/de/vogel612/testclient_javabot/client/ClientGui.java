@@ -1,5 +1,6 @@
 package de.vogel612.testclient_javabot.client;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,19 +23,12 @@ public class ClientGui extends Application implements ChatWorker {
 
 	private ChatRenderController controller;
 	private Stage stage;
-	private static ClientGui instance;
-	public static final CountDownLatch latch = new CountDownLatch(1);
-	
-	public static ClientGui getInstance() {
-		return instance;
-	}
 
 	public ClientGui() {
-		instance = this;
 	}
 	
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) throws IOException {
 		this.stage = stage;
 		//Loading the FXML
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatRender.fxml"));
@@ -45,7 +39,6 @@ public class ClientGui extends Application implements ChatWorker {
 		// Remove this to disable the dark theme
 		scene.getStylesheets().add(getClass().getResource("/style/darkTheme.css").toExternalForm());
 		stage.setScene(scene);
-		latch.countDown();
 	}
 
 	/**
