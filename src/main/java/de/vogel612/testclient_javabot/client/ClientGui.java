@@ -23,15 +23,8 @@ public class ClientGui extends Application implements ChatWorker {
 
 	private ChatRenderController controller;
 	private Stage stage;
-	private static ClientGui instance;
-	public static final CountDownLatch latch = new CountDownLatch(1);
-	
-	public static ClientGui getInstance() {
-		return instance;
-	}
 
 	public ClientGui() {
-		instance = this;
 	}
 	
 	@Override
@@ -46,7 +39,6 @@ public class ClientGui extends Application implements ChatWorker {
 		// Remove this to disable the dark theme
 		scene.getStylesheets().add(getClass().getResource("/style/darkTheme.css").toExternalForm());
 		stage.setScene(scene);
-		latch.countDown();
 	}
 
 	/**

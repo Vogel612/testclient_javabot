@@ -42,27 +42,21 @@ public class TestProgram {
 
 	public TestProgram(Stage stage) {
 		LOGGER.info("instantiating TestProgram class");
-        try{
-	        AppContext.INSTANCE.add(chatInterface);
-	        bot = new DefaultBot(chatInterface);
+        AppContext.INSTANCE.add(chatInterface);
+        bot = new DefaultBot(chatInterface);
 
-			gui = new ClientGui();
-			try {
-				gui.start(stage);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-			LOGGER.info("awaiting latch");
+		gui = new ClientGui();
+		try {
+			gui.start(stage);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		LOGGER.info("awaiting latch");
 
-	        ClientGui.latch.await();
-	        chatInterface.subscribe(bot);
-	        chatInterface.subscribe(gui);
-	        LOGGER.info("Basic component setup completed, beginning command glueing.");
-	        new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
-        }
-        catch(InterruptedException die) {
-        	throw new RuntimeException(die);
-        }
+        chatInterface.subscribe(bot);
+        chatInterface.subscribe(gui);
+        LOGGER.info("Basic component setup completed, beginning command glueing.");
+        new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
         LOGGER.info("Glued Core Commands");
 	}
 
