@@ -23,7 +23,7 @@ It can be run simply by executing `mvn exec:java` to start up with the currently
 All files in this repository, unless explicitly specified otherwise in the files itself 
 are licensed under Apache Software License, Version 2.0 (the "License");
 
-Copyright 2015 Clemens Lieb (aka. Vogel612), ... (aka. TheItachiUchiha)
+Copyright 2015 Clemens Lieb (aka. Vogel612), Abhinay Agarwal (aka. TheItachiUchiha)
 
 You may not use the files except in compliance with the License.
 You may obtain a copy of the License at

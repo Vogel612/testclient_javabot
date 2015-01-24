@@ -39,14 +39,23 @@ public class TestProgram {
 
 	public TestProgram() {
 		LOGGER.info("instantiating TestProgram class");
-		AppContext.INSTANCE.add(chatInterface);
-		bot = new DefaultBot(chatInterface);
-		gui = new ClientGui();
-		chatInterface.subscribe(bot);
-		chatInterface.subscribe(gui);
-		LOGGER.info("Basic component setup completed, beginning command glueing.");
-		new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
-		LOGGER.info("Glued Core Commands");
+        try{
+	        AppContext.INSTANCE.add(chatInterface);
+	        bot = new DefaultBot(chatInterface);
+	        Executors.newSingleThreadExecutor().execute(() -> {
+	        	ClientGui.launch(ClientGui.class);
+			});
+	        ClientGui.latch.await();
+	        gui = ClientGui.getInstance();
+	        chatInterface.subscribe(bot);
+	        chatInterface.subscribe(gui);
+	        LOGGER.info("Basic component setup completed, beginning command glueing.");
+	        new CoreBotCommands(chatInterface, bot).allCommands().forEach(bot::subscribe);
+        }
+        catch(InterruptedException die) {
+        	throw new RuntimeException(die);
+        }
+        LOGGER.info("Glued Core Commands");
 	}
 
 	public void startup() {
