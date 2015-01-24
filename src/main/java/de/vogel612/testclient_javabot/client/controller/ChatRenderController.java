@@ -20,6 +20,13 @@ import de.vogel612.testclient_javabot.client.custom.MessageBox;
 import de.vogel612.testclient_javabot.core.ChatMessageUtils;
 import de.vogel612.testclient_javabot.core.MessageTracker;
 
+/**
+ * Controller class for ChatRender FXML file
+ * 
+ * @author itachi<<a href="mailto:abhinay_agarwal@live.com"
+ *         >abhinay_agarwal@live.com</a>>
+ *
+ */
 public class ChatRenderController implements Initializable {
 
 	@FXML
