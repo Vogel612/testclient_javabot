@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import com.gmail.inverseconduit.bot.Program;
 import com.gmail.inverseconduit.chat.ChatWorker;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
@@ -65,10 +64,7 @@ public class ClientGui implements ChatWorker {
 	 */
 	@Override
 	public boolean enqueueMessage(ChatMessage chatMessage) {
-		if (chatMessage == Program.POISON_PILL) {
-			Platform.exit();
-		}
-
+		// no need to specially act upon the PoisonPill
 		Platform.runLater(() -> {
 			try {
 				controller.addMessage(chatMessage);
