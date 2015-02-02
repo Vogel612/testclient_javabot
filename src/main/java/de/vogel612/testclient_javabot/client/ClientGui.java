@@ -16,12 +16,12 @@ import com.gmail.inverseconduit.datatype.ChatMessage;
 import de.vogel612.testclient_javabot.client.controller.ChatRenderController;
 
 /**
- * Class responsible for loading the FXML and creating an JavaFX test client scene
+ * Class responsible for loading the FXML and creating an JavaFX test client
+ * scene
  * for the JavaBot.
  * 
  * @author itachi<<a href="mailto:abhinay_agarwal@live.com"
  *         >abhinay_agarwal@live.com</a>>
- *
  */
 public class ClientGui implements ChatWorker {
 
@@ -29,10 +29,9 @@ public class ClientGui implements ChatWorker {
 
 	private ChatRenderController controller;
 	private Stage stage;
-	
+
 	/**
-	 * Loads FXML and css, creates a scene and plugs it into the stage 
-	 * <br/>
+	 * Loads FXML and css, creates a scene and plugs it into the stage <br/>
 	 * 
 	 * @throws IOException
 	 */
@@ -65,6 +64,7 @@ public class ClientGui implements ChatWorker {
 	 */
 	@Override
 	public boolean enqueueMessage(ChatMessage chatMessage) {
+		// no need to specially act upon the PoisonPill
 		Platform.runLater(() -> {
 			try {
 				controller.addMessage(chatMessage);
