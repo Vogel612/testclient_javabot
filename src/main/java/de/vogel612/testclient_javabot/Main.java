@@ -21,7 +21,6 @@ import com.gmail.inverseconduit.AppContext;
 import com.gmail.inverseconduit.BotConfig;
 import com.gmail.inverseconduit.bot.Program;
 import com.gmail.inverseconduit.chat.ChatInterface;
-import com.gmail.inverseconduit.commands.sets.CoreBotCommands;
 import com.gmail.inverseconduit.security.ScriptSecurityManager;
 import com.gmail.inverseconduit.security.ScriptSecurityPolicy;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -93,8 +92,6 @@ public final class Main extends Application {
 
 		Program program = new Program(chatInterface);
 
-		//FIXME: Remove after merge of #41, because it's no more needed
-		new CoreBotCommands(chatInterface, program.getBot()).allCommands().forEach(program.getBot()::subscribe);
 		// Used to shut down the executor when the window is closed
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
