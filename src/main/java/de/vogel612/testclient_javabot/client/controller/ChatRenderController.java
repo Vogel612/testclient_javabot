@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import com.gmail.inverseconduit.datatype.ChatMessage;
 
 import de.vogel612.testclient_javabot.client.custom.MessageBox;
+import de.vogel612.testclient_javabot.client.custom.ReplyStrippingFilter;
 import de.vogel612.testclient_javabot.core.ChatMessageUtils;
 import de.vogel612.testclient_javabot.core.MessageTracker;
 
@@ -25,7 +26,6 @@ import de.vogel612.testclient_javabot.core.MessageTracker;
  * 
  * @author itachi<<a href="mailto:abhinay_agarwal@live.com"
  *         >abhinay_agarwal@live.com</a>>
- *
  */
 public class ChatRenderController implements Initializable {
 
@@ -77,7 +77,9 @@ public class ChatRenderController implements Initializable {
 	}
 
 	public void addMessage(final ChatMessage chatMessage) {
-		MessageBox messageBox = new MessageBox(ChatMessageUtils.createFromString(chatMessage.getMessage(), chatMessage.getUsername()));
+		MessageBox messageBox =
+				new MessageBox(ChatMessageUtils.createFromString(chatMessage.getMessage(), chatMessage.getUsername()),
+					new ReplyStrippingFilter());
 		messageBox.prefWidthProperty().bind(window.widthProperty().subtract(50));
 		chatWindow.getChildren().add(messageBox);
 	}

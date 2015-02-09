@@ -12,9 +12,15 @@ public class MessageBox extends HBox {
 	private final Text name = new Text();
 	private final Label message = new Label();
 
-	public MessageBox(final ChatMessage chatMessage) {
+	public MessageBox(final ChatMessage chatMessage, final DisplayFilter... displayFilter) {
 		name.setText(chatMessage.getUsername());
-		message.setText(chatMessage.getMessage());
+		String messageText = chatMessage.getMessage();
+
+		for (final DisplayFilter filter : displayFilter) {
+			messageText = filter.filter(messageText);
+		}
+
+		message.setText(messageText);
 		setLayout();
 		getChildren().addAll(name, message);
 	}
