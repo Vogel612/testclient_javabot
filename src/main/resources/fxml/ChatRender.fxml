@@ -11,7 +11,7 @@
         <items>
             <ScrollPane fx:id="chatWindowScroll" hbarPolicy="NEVER">
                <content>
-                  <VBox fx:id="chatWindow" spacing="10.0" />
+                  <VBox fx:id="chatWindow"/>
                </content>
             </ScrollPane>
             <HBox fx:id="bottomSection" maxHeight="65.0">

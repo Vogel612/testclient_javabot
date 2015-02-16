@@ -1,25 +1,42 @@
-.userInput {
+.sentMsg {
+	-fx-spacing : 20px;
+	-fx-alignment : center-right;
+	-fx-padding : 15, 10, 15, 10 px;
+	-fx-background-color: BLUEVIOLET;
+	-fx-fill:CHART_COLOR_2;
+    -fx-effect: dropshadow(gaussian, black, 1, 0, 0, 0);
+    -fx-background-radius: 5;
+}
+
+.receivedMsg{
 	-fx-spacing : 20px;
 	-fx-alignment : center-left;
+	-fx-padding : 15, 10, 15, 10 px;
+	-fx-background-color: goldenrod;
+    -fx-effect: dropshadow(gaussian, black, 1, 0, 0, 0);
+    -fx-background-radius: 5;
+}
+
+.messageBox{
 	-fx-padding : 20px;
-	-fx-background-color: linear-gradient(to bottom, derive(springgreen, 20%), springgreen);
-    -fx-effect: dropshadow(gaussian, red, 10, 0, 0, 0);
-    -fx-background-insets: 10;
 }
 
 .button {
     -fx-background-color:
-        linear-gradient(#f0ff35, #a9ff00),
-        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
-    -fx-background-radius: 6, 5;
-    -fx-background-insets: 0, 1;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
-    -fx-text-fill: #395306;
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 12px;
+    -fx-padding: 10 20 10 20;
 }
 
-.fancytext {
-    -fx-font: 20px Tahoma;
-    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
-    -fx-stroke: black;
-    -fx-stroke-width: 1;
+.button Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
 }
